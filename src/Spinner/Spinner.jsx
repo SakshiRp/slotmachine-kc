@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react'
+import RewardModal from '../Modal/RewardModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Example from '../Modal/RewardModal';
 
-const Spinner = ({ timer, playClicked, resetSpinner, num, finishHandler }) => {
+const Spinner = ({ timer, playClicked, resetSpinner, num, finishHandler, setResetSpinner, gameStateResponse }) => {
 
     const [spinner, setSpinner] = useState({
       position: 0,   //+230 ki distance pe hai sb items 
@@ -47,6 +51,7 @@ const Spinner = ({ timer, playClicked, resetSpinner, num, finishHandler }) => {
   
     const startPos = () => {
       clearInterval()
+      setResetSpinner(prev => false)
       setSpinner(prev => { return {
         position : 0,
         timeRemaining : 0
@@ -59,6 +64,9 @@ const Spinner = ({ timer, playClicked, resetSpinner, num, finishHandler }) => {
       if( num === 3 && spinner.timeRemaining === 0 ) {
         if(checkAck === false){
           setCheckAck(true)
+          setTimeout(()=> {
+            setResetSpinner(prev => true)
+          },2000)
           finishHandler()
         }
       }
@@ -87,11 +95,15 @@ const Spinner = ({ timer, playClicked, resetSpinner, num, finishHandler }) => {
 
     
     let { position } = spinner;  
+    
     return (
-      <div
-        style={{ backgroundPosition: "0px " + position + "px" }}
-        className={`icons`}
-      ></div>
+     <>
+        <div
+          style={{ backgroundPosition: "0px " + position + "px" }}
+          className={`icons`}
+        ></div>
+        <ToastContainer />
+     </>
     );
   };
 
