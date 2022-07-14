@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Example from "../Modal/Modal";
 import { useUserContext } from "../context/userContext";
+import Example1 from "../Modal/RewardModal";
 
 
 export default function App() {
@@ -23,7 +24,7 @@ export default function App() {
   const [gameStateResponse, setGameStateResponse] = useState([])
 
   
-  const {userDetailsFunc } = useUserContext()
+  const {userDetails, userDetailsFunc } = useUserContext()
 
  
   //fetching user details from app
@@ -36,7 +37,6 @@ export default function App() {
 
 // resets spinner to initial state and calls for acknowledgement API
   const finishHandler = () => {
-    setResetSpinner(!resetSpinner)
     ackStatus(gameStateResponse[0]?.id)
   }
 
@@ -52,7 +52,7 @@ export default function App() {
            },
            body : JSON.stringify({
             data : {
-              uid : "AyhFUze1cubqaTsDfAiaCYlQeLK2",
+              uid : userDetails?.uid ?? "dummy",
               type : "userDetails" 
             }
            })
@@ -81,7 +81,7 @@ export default function App() {
          },
          body : JSON.stringify({
           data : {
-            uid : "AyhFUze1cubqaTsDfAiaCYlQeLK2",
+            uid : userDetails?.uid ?? "dummy",
             type : "getStatus"
           }
          })
@@ -110,7 +110,7 @@ export default function App() {
             data : {
               id : id,
               type : "ack",              
-              uid : "AyhFUze1cubqaTsDfAiaCYlQeLK2",
+              uid : userDetails?.uid ?? "dummy",
             }
            })
         }
@@ -134,7 +134,7 @@ export default function App() {
          },
          body : JSON.stringify({
           data : {
-            uid : "AyhFUze1cubqaTsDfAiaCYlQeLK2",
+            uid : userDetails?.uid ?? "dummy",
             type : "gameState"
           }
          })
@@ -185,6 +185,9 @@ export default function App() {
      {
       (getStatusResponse[0]?.is_result_present !== false && getStatusResponse[0]?.is_result_present !== undefined) && <Example getStatusResponse={getStatusResponse[0]} ackStatus={ackStatus} id={getStatusResponse[0]?.id} />
      }
+      
+     {resetSpinner && <Example1 gameStateResponse={gameStateResponse} />}
+     
     
       {
         (gameStateResponse.length === 0 || gameStateResponse[0].status === 'ERR') && 
@@ -203,18 +206,24 @@ export default function App() {
           timer={(gameStateResponse[0]?.result_sequence !== undefined) ? (gameStateResponse[0]?.result_sequence[0])%10 * 230 + (2300) : 0}
           playClicked={playClicked}
           resetSpinner={resetSpinner}
+          setResetSpinner={setResetSpinner}
+          gameStateResponse={gameStateResponse}
           num={1}
         />
         <Spinner
           timer={(gameStateResponse[0]?.result_sequence !== undefined) ? (gameStateResponse[0]?.result_sequence[1])%10 * 230 + (2300*2) : 0}
           playClicked={playClicked}
           resetSpinner={resetSpinner}
+          setResetSpinner={setResetSpinner}
+          gameStateResponse={gameStateResponse}
           num={2}          
         />
         <Spinner
           timer={(gameStateResponse[0]?.result_sequence !== undefined) ? (gameStateResponse[0]?.result_sequence[2])%10 * 230 + (2300*3) : 0}
           playClicked={playClicked}
           resetSpinner={resetSpinner}
+          setResetSpinner={setResetSpinner}
+          gameStateResponse={gameStateResponse}
           num={3}
           finishHandler={finishHandler}
         />
