@@ -113,7 +113,6 @@ small{
 
 .spinner-outer{
   background-color: #D45339;
-  border-image: linear-gradient(#f6b73c, #4d9f0c) 30;
 }
 
 
@@ -138,13 +137,6 @@ small{
   top: 32px;
   right: 32px;
   left: 32px;
-  background: linear-gradient(
-    to bottom, 
-    rgba(64,64,64,1) 0%, 
-    rgba(64,64,64,0) 7%, 
-    rgba(64,64,64,0) 93%, 
-    rgba(64,64,64,1) 100%
-  );
 }
 
 @media screen and (max-width: 1000px) {
